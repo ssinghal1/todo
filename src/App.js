@@ -1,14 +1,36 @@
 
+import React, { useState } from 'react';
 import './App.css';
-import TodoRowItem from './components/TodoRowItem';
+import NewTodoForm from './components/NewTodoForm';
+import TodoTable from './components/TodoTable';
 
 function App() {
 
-      const todo = [
+      const [todo, setTodo] = useState ([
         {rowNumber:1 , rowDescription:"Finish dinner", rowAssigned:"Sam"},
         {rowNumber:2 , rowDescription:"Feed puppy", rowAssigned:"Sam"},
-        {rowNumber:3 , rowDescription:"Water Plants", rowAssigned:"Sam"}
-      ];
+        {rowNumber:3 , rowDescription:"Water Plants", rowAssigned:"Sam"},
+        {rowNumber:4 , rowDescription:"Clean House", rowAssigned:"Sam"}
+      ])
+
+      const addTodo = (description,assigned) => {
+          let rowNumber=0
+          if(todo.length>0)
+          {
+            rowNumber=todo[todo.length-1].rowNumber+1;
+          }
+          else{
+            rowNumber=1;
+          }
+              const newTodo = {
+            rowNumber : todo.length + 1,
+            rowDescription:description,
+            rowAssigned :assigned
+              };
+
+              setTodo (todo => [...todo, newTodo])
+          
+      }
 
   return (
     <div className='mt-5 container'>
@@ -17,33 +39,11 @@ function App() {
           To Do's
         </div>
         <div className='card-body'>
-          <table className='table table-hover'>
-            <thead>
-              <tr>
-                <th scope='col'>#</th>
-                <th scope='col'>Description</th>
-                <th scope='col'>Assigned</th>
-              </tr>
-            </thead>
-            <tbody>
-              <TodoRowItem
-              rowNumber={todo[0].rowNumber}
-              rowDescription={todo[0].rowDescription}
-              rowAssigned={todo[0].rowAssigned}
-              />
-              <TodoRowItem
-              rowNumber={todo[1].rowNumber}
-              rowDescription={todo[1].rowDescription}
-              rowAssigned={todo[1].rowAssigned}
-              />
-              <TodoRowItem
-              rowNumber={todo[2].rowNumber}
-              rowDescription={todo[2].rowDescription}
-              rowAssigned={todo[2].rowAssigned}
-              />
-            </tbody>
-          </table>
+          <TodoTable todo ={todo}/>
+          <button className="btn btn-primary" onClick={addTodo}>Add New Todo</button>
+          <NewTodoForm addTodo={addTodo}/>
         </div>
+        
       </div>
       
     </div>
